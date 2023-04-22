@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+    <script>
+        // Comprobar si el navegador ejecuta service workers
+        if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').then(reg => {
+        console.log('Todo bien:', reg)
+        }, function (err) {
+        console.log('Fallo:', err)
+        })
+        })
+        }
+        </script>
+<head>
+    <link rel="manifest" href="manifest.json">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practica 3</title>
+</head>
+<body>
+    
+</body>
+</html>
