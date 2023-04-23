@@ -20,26 +20,38 @@ class App extends Component {
     axios.get(url)
       .then(response => {
         const books = response.data.items;
-        this.setState({ books });
+        this.setState({ books, autor, titulo });
       })
       .catch(error => console.error(error));
   }
+
+  componentDidMount() {
+    const storedData = localStorage.getItem('myAppData');
+    if (storedData) {
+      this.setState(JSON.parse(storedData));
+    }
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem('myAppData', JSON.stringify(this.state));
+  }
+
   render() {
-    const { books } = this.state;
+    const { books, autor, titulo } = this.state;
     return (
       <div className="App">
-        <header className="App-header">
+        <div className="App-header">
           <p>Bienvenido a mi buscador de libro</p>
-        </header>
-        <body>
+        </div>
+        <div>
           <form onSubmit={this.handleSubmit}>
             <div>
               <label htmlFor="autor">Autor:</label>
-              <input type="text" id="autor" placeholder="Introduzca el nombre del autor" />
+              <input type="text" id="autor" placeholder={autor ? `Autor actual: ${autor}` : "Introduzca el nombre del autor"}/>
             </div>
             <div>
               <label htmlFor="titulo">Título:</label>
-              <input type="text" id="titulo" placeholder="Introduzca el título del libro" />
+              <input type="text" id="titulo" placeholder={titulo ? `Titulo actual: ${titulo}` : "Introduzca el título del libro"} />
             </div>
             <button type="submit">Buscar</button>
           </form>
@@ -64,8 +76,7 @@ class App extends Component {
               </li>
             ))}
           </ul>
-
-        </body>
+        </div>
       </div>
     );
   }
