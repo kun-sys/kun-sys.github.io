@@ -18,10 +18,10 @@ class App extends Component {
     event.preventDefault();
     let autor = document.getElementById('autor').value;
     let titulo = document.getElementById('titulo').value;
-    if(autor == ""){
+    if(autor === ""){
       autor = this.state.autor;
     }
-    if(titulo == ""){
+    if(titulo === ""){
       titulo = this.state.titulo;
     }
     const url = `https://www.googleapis.com/books/v1/volumes?q=${autor}+intitle:${titulo}&maxResults=40`;
