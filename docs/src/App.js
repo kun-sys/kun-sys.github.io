@@ -55,11 +55,11 @@ class App extends Component {
           <form onSubmit={this.handleSubmit}>
             <div>
               <label htmlFor="autor">Autor:</label>
-              <input type="text" id="autor" placeholder={autor ? `Autor actual: ${autor}` : "Introduzca el nombre del autor"} />
+              <input type="text" id="autor" placeholder={autor==="" ? `Autor actual: ${autor}` : "Introduzca el nombre del autor"} />
             </div>
             <div>
               <label htmlFor="titulo">Título:</label>
-              <input type="text" id="titulo" placeholder={titulo ? `Titulo actual: ${titulo}` : "Introduzca el título del libro"} />
+              <input type="text" id="titulo" placeholder={titulo==="" ? `Titulo actual: ${titulo}` : "Introduzca el título del libro"} />
             </div>
             <button type="submit">Buscar</button>
           </form>
