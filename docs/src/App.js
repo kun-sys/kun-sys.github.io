@@ -6,7 +6,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      books: []
+      books: [],
+      autor: String,
+      titulo: String
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -14,8 +16,14 @@ class App extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const autor = document.getElementById('autor').value;
-    const titulo = document.getElementById('titulo').value;
+    let autor = document.getElementById('autor').value;
+    let titulo = document.getElementById('titulo').value;
+    if(autor == ""){
+      autor = this.state.autor;
+    }
+    if(titulo == ""){
+      titulo = this.state.titulo;
+    }
     const url = `https://www.googleapis.com/books/v1/volumes?q=${autor}+intitle:${titulo}&maxResults=40`;
     axios.get(url)
       .then(response => {
@@ -47,7 +55,7 @@ class App extends Component {
           <form onSubmit={this.handleSubmit}>
             <div>
               <label htmlFor="autor">Autor:</label>
-              <input type="text" id="autor" placeholder={autor ? `Autor actual: ${autor}` : "Introduzca el nombre del autor"}/>
+              <input type="text" id="autor" placeholder={autor ? `Autor actual: ${autor}` : "Introduzca el nombre del autor"} />
             </div>
             <div>
               <label htmlFor="titulo">Título:</label>
@@ -56,7 +64,7 @@ class App extends Component {
             <button type="submit">Buscar</button>
           </form>
           <ul className="book-list">
-            {books.map(book => (
+            {books ? books.map(book => (
               <li key={book.id}>
                 <div className="book-info">
                   <div className="book-cover">
@@ -74,7 +82,9 @@ class App extends Component {
                   </div>
                 </div>
               </li>
-            ))}
+            )): (
+              <li>No se encontraron libros</li>
+            )}
           </ul>
         </div>
       </div>
