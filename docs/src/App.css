@@ -76,6 +76,8 @@ ul {
   flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 5vh;
+  height: 500px;
+  overflow-y: scroll;
 }
 
 li {
@@ -83,12 +85,27 @@ li {
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 1rem;
-  max-width: 20rem;
+  flex-grow: 1;
   box-shadow: 2px 2px 2px #ccc;
   transition: all 0.3s ease-in-out;
+}
+
+.book-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
 li:hover {
   transform: scale(1.1);
   box-shadow: 3px 3px 3px #ccc;
+}
+
+.url-container {
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.url {
+  word-break: break-all;
 }
