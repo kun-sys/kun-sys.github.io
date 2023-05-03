@@ -24,7 +24,7 @@ class App extends Component {
     if(titulo === ""){
       titulo = this.state.titulo;
     }
-    const url = `https://www.googleapis.com/books/v1/volumes?q=${autor}+intitle:${titulo}&maxResults=40`;
+    const url = `https://www.googleapis.com/books/v1/volumes?q=inauthor:${autor}+intitle:${titulo}&maxResults=40`;
     axios.get(url)
       .then(response => {
         const books = response.data.items;
