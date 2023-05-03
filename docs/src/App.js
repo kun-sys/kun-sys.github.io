@@ -6,7 +6,9 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      books: []
+      books: [],
+      autor: String,
+      titulo: String
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -14,43 +16,56 @@ class App extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const autor = document.getElementById('autor').value;
-    const titulo = document.getElementById('titulo').value;
+    let autor = document.getElementById('autor').value;
+    let titulo = document.getElementById('titulo').value;
+    if(autor === ""){
+      autor = this.state.autor;
+    }
+    if(titulo === ""){
+      titulo = this.state.titulo;
+    }
     const url = `https://www.googleapis.com/books/v1/volumes?q=inauthor:${autor}+intitle:${titulo}&maxResults=40`;
     axios.get(url)
       .then(response => {
         const books = response.data.items;
-        this.setState({ books });
+        this.setState({ books, autor, titulo });
       })
       .catch(error => console.error(error));
   }
 
-  handleBookClick(url) {
-    window.open(url);
+  componentDidMount() {
+    const storedData = localStorage.getItem('myAppData');
+    if (storedData) {
+      this.setState(JSON.parse(storedData));
+    }
+  }
+
+  componentDidUpdate() {
+    localStorage.setItem('myAppData', JSON.stringify(this.state));
   }
 
   render() {
-    const { books } = this.state;
+    const { books, autor, titulo } = this.state;
     return (
       <div className="App">
-        <header className="App-header">
+        <div className="App-header">
           <p>Bienvenido a mi buscador de libro</p>
-        </header>
-        <body>
+        </div>
+        <div>
           <form onSubmit={this.handleSubmit}>
             <div>
               <label htmlFor="autor">Autor:</label>
-              <input type="text" id="autor" placeholder="Introduzca el nombre del autor" />
+              <input type="text" id="autor" placeholder={autor==="" ? `Autor actual: ${autor}` : "Introduzca el nombre del autor"} />
             </div>
             <div>
               <label htmlFor="titulo">Título:</label>
-              <input type="text" id="titulo" placeholder="Introduzca el título del libro" />
+              <input type="text" id="titulo" placeholder={titulo==="" ? `Titulo actual: ${titulo}` : "Introduzca el título del libro"} />
             </div>
             <button type="submit">Buscar</button>
           </form>
           <ul className="book-list">
-            {books.map(book => (
-              <li key={book.id} onClick={() => this.handleBookClick(book.volumeInfo.previewLink)}>
+            {books ? books.map(book => (
+              <li key={book.id}>
                 <div className="book-info">
                   <div className="book-cover">
                     <img src={book.volumeInfo.imageLinks ? book.volumeInfo.imageLinks.thumbnail : ""} alt="Portada del libro"/>
@@ -60,13 +75,18 @@ class App extends Component {
                     <p><strong>Autor:</strong> {book.volumeInfo.authors ? book.volumeInfo.authors.join(", ") : "Autor desconocido"}</p>
                     <p><strong>Fecha de publicación:</strong> {book.volumeInfo.publishedDate ? book.volumeInfo.publishedDate : "Desconocida"}</p>
                     <p><strong>Puntuación:</strong> {book.volumeInfo.averageRating ? book.volumeInfo.averageRating + "/5" : "Sin calificar"}</p>
+                    <div className="url-container">
+                      <p><strong>URL:</strong></p>
+                      <a href={book.volumeInfo.previewLink} className="url">{book.volumeInfo.previewLink}</a>
+                    </div>
                   </div>
                 </div>
               </li>
-            ))}
+            )): (
+              <li>No se encontraron libros</li>
+            )}
           </ul>
-
-        </body>
+        </div>
       </div>
     );
   }
