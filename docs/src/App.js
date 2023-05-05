@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './App.css';
 
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -56,8 +55,6 @@ class App extends Component {
       this.setState(JSON.parse(storedData));
     }
   }
-
-
 
   componentDidUpdate() {
     localStorage.setItem('myAppData', JSON.stringify(this.state));
@@ -122,7 +119,6 @@ class App extends Component {
               </ul>
             )}
           </div>
-
         </div>
       </div>
     );
